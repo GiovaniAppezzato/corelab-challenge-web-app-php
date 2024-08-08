@@ -1,4 +1,4 @@
-import { ITimestamps } from './Common';
+import { ITimestamps } from '@src/types/Common';
 
 export interface IFile extends ITimestamps {
   id: number;

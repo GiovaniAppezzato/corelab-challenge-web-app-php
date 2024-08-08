@@ -1,14 +1,14 @@
 import { ReactNode } from "react";
 import styles from "./Form.module.scss";
 
-interface IHeaderProps {
+interface ICreateNoteFormProps {
   children: ReactNode;
 }
 
-const Header = (props: IHeaderProps) => {
+const CreateNoteForm = (props: ICreateNoteFormProps) => {
   return (
     <></>
   );
 };
 
-export default Header;
+export default CreateNoteForm;

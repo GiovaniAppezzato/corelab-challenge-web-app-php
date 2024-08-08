@@ -10,7 +10,7 @@ export function createFormData(data: Record<string, any>) {
   return formData;
 }
 
-export function createGetParams(data: Record<string, any>) {
+export function createQueryParams(data: Record<string, any>) {
   const params = new URLSearchParams();
 
   for (const key in data) {

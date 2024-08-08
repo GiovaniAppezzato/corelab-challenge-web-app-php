@@ -1,5 +1,5 @@
 import api from '@src/lib/api';
-import { createGetParams } from '@src/utilities/apiUtils';
+import { createQueryParams } from '@src/utilities/apiUtils';
 import { INote } from '@src/types/Note';
 
 interface IGetNotesParams {
@@ -17,7 +17,7 @@ interface IGetNoteByIdResponse {
 
 export default class NotesService {
   static getNotes(params: IGetNotesParams) {
-    return api.get<IGetNotesResponse>(`/notes?${createGetParams(params)}`);
+    return api.get<IGetNotesResponse>(`/notes?${createQueryParams(params)}`);
   }
 
   static getNoteById(noteId: number) {

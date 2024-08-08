@@ -1,14 +1,24 @@
-import { ReactNode } from "react";
-import styles from "./Search.module.scss";
+import { MdOutlineSearch } from "react-icons/md";
 
 interface ISearchProps {
-  children: ReactNode;
+  placeholder?: string;
+  type?: string;
+  loading?: boolean;
+  className?: string;
 }
 
-const Note = (props: ISearchProps) => {
+const Search = ({
+  loading = false,
+  type = "text",
+  className = "",
+  ...rest
+}: ISearchProps) => {
   return (
-    <></>
+    <div className={`search ${className}`}>
+      <input className="search-input" type={type} {...rest} />
+      {!loading ? <MdOutlineSearch className="search-icon" size={22} /> : null}
+    </div>
   );
 };
 
-export default Note;
+export default Search;
