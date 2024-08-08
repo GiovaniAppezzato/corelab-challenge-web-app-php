@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
-import styles from "./Search.module.scss";
+import styles from "./Note.module.scss";
 
-interface ISearchProps {
+interface INoteProps {
   children: ReactNode;
 }
 
-const Note = (props: ISearchProps) => {
+const Note = (props: INoteProps) => {
   return (
     <></>
   );

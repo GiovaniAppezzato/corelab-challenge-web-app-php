@@ -1,11 +1,14 @@
-const API = "http://localhost:3333";
+import axios from 'axios';
 
-const endpoint = (path: string): string => API + path;
+const apiUrl = process.env.REACT_APP_API_URL;
+const apiPrefix = process.env.REACT_APP_API_PREFIX;
 
-const get = async (path: string): Promise<any> => {
-  return fetch(endpoint(path)).then((res) => res.json());
-};
+const api = axios.create({
+  baseURL: `${apiUrl}/${apiPrefix}`,
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  }
+});
 
-export const getVehicles = async () => {
-  return get("/vehicles");
-};
+export default api;
