@@ -6,5 +6,6 @@ export interface INote extends ITimestamps {
   title: string;
   content: string;
   color: string;
+  is_favorite: boolean;
   file: IFile|null;
 }

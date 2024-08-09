@@ -1,0 +1,85 @@
+@import "@src/styles/variables.scss";
+
+.note {
+  width: 100%;
+  max-width: 390px;
+  background-color: $color-shape;
+  border-radius: $border-radius;
+  box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.25);
+
+  .note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+
+    .note-title {
+      font-family: $font-family;
+      font-size: $font-size;
+      color: $color-typography;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .note-icon {
+      cursor: pointer;
+      color: $color-typography;
+
+      &.Active {
+        color: #FFA000 !important;
+      }
+    }
+  }
+
+  .note-body {
+    padding: 1rem;
+    border-top: 1px solid $color-border;
+    min-height: 330px;
+
+    p {
+      font-family: $font-family;
+      font-size: $font-size;
+      color: $color-typography;
+      margin: 0;
+    }
+  }
+
+  .note-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+
+    .note-actions {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      .note-action {
+        width: 34px;
+        height: 34px;
+        border: none;
+        outline: none;
+        background-color: transparent;
+        border-radius: 50%;
+        transition: all 0.3s;
+        color: $color-typography;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $color-primary;
+        }
+
+        &.active {
+          background-color: $color-primary;
+        }
+      }
+    }
+
+    .note-date {
+      font-family: $font-family;
+      font-size: 12px;
+      color: $color-typography;
+    }
+  }
+}

@@ -1,13 +1,15 @@
-import { ReactNode } from "react";
-import { Search } from '@src/components'
 import { MdOutlineClose } from "react-icons/md";
+import { Search } from '@src/components'
 import coreNotes from '@src/assets/coreNotes.png'
+import './header.scss';
 
 interface IHeaderProps {
-  children?: ReactNode;
+  onSearch?: (value: string) => void;
 }
 
-const Header = (props: IHeaderProps) => {
+const Header = ({
+  onSearch,
+}: IHeaderProps) => {
   return (
     <header className='header'>
       <div className='header-container'>
@@ -16,7 +18,11 @@ const Header = (props: IHeaderProps) => {
             <img src={coreNotes} alt="CoreNotes logo" />
             <h1>CoreNotes</h1>
           </div>
-          <Search placeholder="Pesquisar notas" className="ml-3" />
+          <Search 
+            className="ml-3" 
+            placeholder="Pesquisar notas"
+            onSearch={onSearch}
+          />
         </div>
         <MdOutlineClose size={24} color="#51646E" />
       </div>

@@ -1,5 +1,4 @@
-@import './styles/variables.scss';
-@import './styles/break-points.scss';
-@import './styles/global.scss';
-@import './styles/components/header.scss';
-@import './styles/components/search.scss';
+@import '@src/styles/variables.scss';
+@import '@src/styles/break-points.scss';
+@import '@src/styles/utils.scss';
+@import '@src/styles/global.scss';

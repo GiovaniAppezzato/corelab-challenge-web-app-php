@@ -1,19 +1,11 @@
 import api from '@src/lib/api';
 import { createQueryParams } from '@src/utilities/apiUtils';
-import { INote } from '@src/types/Note';
-
-interface IGetNotesParams {
-  title?: string|null;
-  color?: string|null;
-}
-
-interface IGetNotesResponse {
-  data: INote[];
-}
-
-interface IGetNoteByIdResponse {
-  data: INote;
-}
+import {
+  ICreateNoteParams,
+  ICreateNoteResponse,
+  IGetNotesParams,
+  IGetNotesResponse
+} from './interfaces';
 
 export default class NotesService {
   static getNotes(params: IGetNotesParams) {
@@ -21,18 +13,18 @@ export default class NotesService {
   }
 
   static getNoteById(noteId: number) {
-    return api.get<IGetNoteByIdResponse>(`/notes/${noteId}`);
+    // 
   }
 
-  static createNote() {
-    //
+  static createNote(params: ICreateNoteParams) {
+    return api.post<ICreateNoteResponse>('/notes', params);
   }
 
   static updateNote() {
     //
   }
 
-  static deleteNote() {
+  static delete() {
     //
   }
 
@@ -41,6 +33,10 @@ export default class NotesService {
   }
 
   static deleteFile() {
+    //
+  }
+
+  static toggleFavorite() {
     //
   }
 }
