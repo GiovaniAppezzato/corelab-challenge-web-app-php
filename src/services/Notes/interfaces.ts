@@ -19,6 +19,18 @@ export interface ICreateNoteResponse {
   data: INote;
 }
 
+export interface IUpdateNoteParams {
+  id: number;
+  title: string;
+  content: string;
+  color?: string;
+  file?: File;
+}
+
+export interface IUpdateNoteResponse {
+  data: INote;
+}
+
 export interface IToggleFavoriteResponse {
   data: INote;
 }

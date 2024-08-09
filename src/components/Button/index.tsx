@@ -5,16 +5,18 @@ interface IButtonProps {
   onClick?: () => void;
   children?: ReactNode;
   loading?: boolean;
+  className?: string;
 }
 
 const Action = ({
   onClick,
   children,
   loading = false,
+  className = '',
   ...rest
 }: IButtonProps) => {
   return (
-    <button className={`button`} onClick={onClick} {...rest}>
+    <button className={`button ${className}`} onClick={onClick} {...rest}>
       {loading ? 'Carregando...' : children}
     </button>
   );

@@ -12,6 +12,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
+    position: relative;
 
     .note-title {
       font-family: $font-family;
@@ -19,14 +20,40 @@
       color: $color-typography;
       font-weight: 700;
       margin: 0;
+      line-height: 1.5;
     }
 
     .note-icon {
       cursor: pointer;
       color: $color-typography;
+      position: absolute;
+      top: 50%;
+      right: 1rem;
+      transform: translateY(-50%);
 
       &.Active {
         color: #FFA000 !important;
+      }
+    }
+
+    &.editing {
+      padding: 0;
+
+      .note-title {
+        display: none;
+      }
+
+      input {
+        width: 100%;
+        padding: 1rem 3rem 1rem 1rem;
+        font-family: $font-family;
+        font-size: $font-size;
+        color: $color-typography;
+        font-weight: 700;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        line-height: 1.5;
       }
     }
   }
@@ -41,6 +68,22 @@
       font-size: $font-size;
       color: $color-typography;
       margin: 0;
+    }
+
+    &.editing {
+      padding: 0;
+
+      input, textarea {
+        width: 100%;
+        padding: 1rem;
+        font-family: $font-family;
+        font-size: $font-size;
+        color: $color-typography;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        resize: none;
+      }
     }
   }
 

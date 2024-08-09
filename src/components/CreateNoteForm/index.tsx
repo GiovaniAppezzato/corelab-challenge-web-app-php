@@ -1,21 +1,29 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { MdOutlineStarBorder, MdOutlineStar } from "react-icons/md";
 import * as yup from "yup";
 import { INote } from "@src/types/Note";
 import { Button } from "@src/components";
 import NotesService from "@src/services/Notes";
+import Toast from "@src/lib/toast";
 import styles from "./CreateNoteForm.module.scss";
 
 interface ICreateNoteFormProps {
-  onCreate: (note: INote) => void;
+  notes: INote[];
+  setNotes: React.Dispatch<React.SetStateAction<INote[]>>;
 }
 
 const schema = yup.object().shape({
-  title: yup.string().required().max(40).label("Título"),
-  content: yup.string().required().label("Conteúdo"),
+  title: yup.string()
+    .required("Campo obrigatório")
+    .max(40, "Deve ter no máximo 40 caracteres")
+    .min(3, "Deve ter no mínimo 3 caracteres")
+    .label("Título"),
+  content: yup.string()
+    .required("Campo obrigatório")
+    .label("Conteúdo"),
 });
 
-const CreateNoteForm = ({ onCreate }: ICreateNoteFormProps) => {
+const CreateNoteForm = ({ setNotes }: ICreateNoteFormProps) => {
   const [isCreating, setIsCreating] = useState(false);
   const [values, setValues] = useState({
     title: "",
@@ -27,18 +35,25 @@ const CreateNoteForm = ({ onCreate }: ICreateNoteFormProps) => {
     if(!isCreating) {
       setIsCreating(true);
       try {
-        await schema.validate(values, { abortEarly: false });
+        await schema.validate(values, { abortEarly: true });
         const note = (await NotesService.createNote({ ...values })).data.data;
-        onCreate(note);
-        setValues({ title: "", content: "", is_favorite: false });
+        setNotes(notes => [note, ...notes]);
+        resetForm();
+        Toast.success("Anotação criada com sucesso!");
       } catch (error) {
         if (error instanceof yup.ValidationError) {
-          console.log("Validation: ", error);
+          Toast.warning(`${error.params?.label}: ${error.message}`);
+        } else {
+          Toast.error("Ocorreu um erro ao criar a anotação.");
         }
       } finally {
         setIsCreating(false);
       }
     } 
+  }
+
+  function resetForm() {
+    setValues({ title: "", content: "", is_favorite: false });
   }
 
   function handleToggleFavorite() {

@@ -5,7 +5,9 @@ import {
   ICreateNoteResponse,
   IGetNotesParams,
   IGetNotesResponse,
-  IToggleFavoriteResponse
+  IToggleFavoriteResponse,
+  IUpdateNoteParams,
+  IUpdateNoteResponse
 } from './interfaces';
 
 export default class NotesService {
@@ -21,8 +23,8 @@ export default class NotesService {
     return api.post<ICreateNoteResponse>('/notes', params);
   }
 
-  static updateNote() {
-    //
+  static updateNote(params: IUpdateNoteParams) {
+    return api.put<IUpdateNoteResponse>(`/notes/${params.id}`, { ...params, id: undefined });
   }
 
   static delete() {

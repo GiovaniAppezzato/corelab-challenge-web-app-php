@@ -18,34 +18,37 @@ const NotesPage = () => {
     fetchInitialNotes();
   }, []);
 
-  function onSearch(value: string) {
+  function onSearch(notes: string) {
     // 
   }
 
-  function onCreate(note: INote) {
-    setNotes([...notes, note]);
-  }
+  function renderNotesSection(title: string, filterFn: (note: INote) => boolean) {
+    const filteredSectionNotes = notes.filter(filterFn);
 
-  function onEdit(note: INote) {
-    setNotes(notes.map(n => (n.id === note.id ? note : n)));
-  }
+    return filteredSectionNotes.length !== 0 ? (
+      <div className="mb-2">
+        <p className="fs-14 mb-1 ml-1">{title}</p>
+        <div className="flex flex-wrap gap-2">
+          {filteredSectionNotes.map(note => (
+            <Note key={note.id} note={note} setNotes={setNotes} />
+          ))}
+        </div>
+      </div>
+    ) : null;
+  };
 
   return (
     <Fragment>
-      <Header onSearch={onSearch} />
+      <Header onSearch={() => {}} />
       <main className='p-2'>
         <div className='flex justify-center align-center'>
-          <CreateNoteForm onCreate={onCreate} />
+          <CreateNoteForm notes={notes} setNotes={setNotes} />
         </div>
         <Divider label="Listagem das anotações" />
         {notes.length > 0 ? (
           <Fragment>
-            <div>
-              <p className="fs-14 mb-1 ml-1">Outras</p>
-              <div className="flex flex-wrap gap-2">
-                {notes.map(note => <Note key={note.id} note={note} onEdit={onEdit} />)}
-              </div>
-            </div>
+            {renderNotesSection("Favoritos", (note) => note.is_favorite)}
+            {renderNotesSection("Outros", (note) => !note.is_favorite)}
           </Fragment>
         ) : (
           <Alert className="text-center">
