@@ -30,6 +30,7 @@ const CreateNoteForm = ({ onCreate }: ICreateNoteFormProps) => {
         await schema.validate(values, { abortEarly: false });
         const note = (await NotesService.createNote({ ...values })).data.data;
         onCreate(note);
+        setValues({ title: "", content: "", is_favorite: false });
       } catch (error) {
         if (error instanceof yup.ValidationError) {
           console.log("Validation: ", error);
@@ -71,7 +72,7 @@ const CreateNoteForm = ({ onCreate }: ICreateNoteFormProps) => {
       </div>
       {canSubmit() && (
         <div className="flex justify-end px-1 pb-1">
-          <Button onClick={handleSubmit}>
+          <Button onClick={handleSubmit} loading={isCreating}>
             Gravar nota
           </Button>
         </div>

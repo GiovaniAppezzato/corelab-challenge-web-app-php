@@ -18,3 +18,7 @@ export interface ICreateNoteParams {
 export interface ICreateNoteResponse {
   data: INote;
 }
+
+export interface IToggleFavoriteResponse {
+  data: INote;
+}

@@ -4,7 +4,8 @@ import {
   ICreateNoteParams,
   ICreateNoteResponse,
   IGetNotesParams,
-  IGetNotesResponse
+  IGetNotesResponse,
+  IToggleFavoriteResponse
 } from './interfaces';
 
 export default class NotesService {
@@ -36,7 +37,7 @@ export default class NotesService {
     //
   }
 
-  static toggleFavorite() {
-    //
+  static toggleFavorite(noteId: number) {
+    return api.patch<IToggleFavoriteResponse>(`/notes/${noteId}/favorite`);
   }
 }

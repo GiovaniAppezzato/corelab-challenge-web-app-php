@@ -8,7 +8,7 @@
   .search-input {
     width: 530.17px;
     padding: .525rem .75rem;
-    border-radius: 3px;
+    border-radius: $border-radius;
     box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.25);
     border: 1px solid $color-border;
     font-size: $font-size;
