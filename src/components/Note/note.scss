@@ -63,6 +63,10 @@
     border-top: 1px solid $color-border;
     min-height: 330px;
 
+    &.border-white {
+      border-top: 1px solid $color-shape;
+    }
+
     p {
       font-family: $font-family;
       font-size: $font-size;
@@ -117,12 +121,6 @@
           background-color: $color-primary;
         }
       }
-    }
-
-    .note-date {
-      font-family: $font-family;
-      font-size: 12px;
-      color: $color-typography;
     }
   }
 }

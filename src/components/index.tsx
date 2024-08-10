@@ -6,5 +6,6 @@ import CreateNoteForm from "@src/components/CreateNoteForm";
 import Button from "@src/components/Button";
 import Divider from "@src/components/Divider";
 import Alert from "@src/components/Alert";
+import ColorPicker from "@src/components/ColorPicker";
 
-export { Header, Search, Note, NoteAction, CreateNoteForm, Button, Divider, Alert };
+export { Header, Search, Note, NoteAction, CreateNoteForm, Button, Divider, Alert, ColorPicker };

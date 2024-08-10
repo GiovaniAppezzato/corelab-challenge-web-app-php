@@ -3,7 +3,7 @@ import { MdOutlineStar, MdOutlineStarBorder, MdOutlineCreate, MdClose } from "re
 import { RiPaintFill } from "react-icons/ri";
 import * as yup from 'yup';
 import { INote } from "@src/types/Note";
-import { NoteAction, Button } from '@src/components';
+import { NoteAction, Button, ColorPicker } from '@src/components';
 import NotesService from "@src/services/Notes";
 import Toast from "@src/lib/toast";
 import "./note.scss";
@@ -28,8 +28,9 @@ const Note = ({
 }: INoteProps) => {
   const { id, title, content, is_favorite, color } = note;
   
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isShowingColorPicker, setIsShowingColorPicker] = useState(false);
   const [values, setValues] = useState({ title, content, color });
 
   const handleToggleFavorite = useCallback(async () => {
@@ -49,6 +50,33 @@ const Note = ({
   }
   , [id, setNotes]);
 
+  const handleChangeColor = useCallback(async (color: string|null) => {
+    try {
+      setNotes((prevNotes) => {
+        return prevNotes.map((_) => {
+          if (_.id === id) {
+            return { ..._, color };
+          }
+          return _;
+        });
+      });
+      await NotesService.updateNote({ ...note, color });
+    } catch (error) {
+      console.error('An error occurred while changing color', error);
+    }
+  }, [id, setNotes]);
+  
+  const handleDeleteNote = useCallback(async () => {
+    try {
+      setNotes((prevNotes) => {
+        return prevNotes.filter((_) => _.id !== id);
+      });
+      await NotesService.deleteNote(id);
+    } catch (error) {
+      console.error('An error occurred while deleting note', error);
+    }
+  }, [id, setNotes]);
+
   async function handleSaveChanges() {
     if(!isSaving) {
       setIsSaving(true);
@@ -63,7 +91,7 @@ const Note = ({
             return _;
           });
         });
-        setIsEdit(false);
+        setIsEditMode(false);
         Toast.success('Alterações salvas com sucesso!');
       } catch (error) {
         if (error instanceof yup.ValidationError) {
@@ -78,15 +106,16 @@ const Note = ({
   }
 
   function handleToggleEdit() {
-    if (isEdit) {
-      setIsEdit(false);
+    if (isEditMode) {
+      setIsEditMode(false);
     } else {
       startEditing();
     }
   }
 
   function startEditing() {
-    setIsEdit(true);
+    setIsEditMode(true);
+    setIsShowingColorPicker(false);
 
     setValues({
       title,
@@ -96,11 +125,16 @@ const Note = ({
 
     setTimeout(() => document.querySelector<HTMLInputElement>('#title')?.focus(), 100);
   }
+
+  function onColorChange(color: string|null) {
+    setIsShowingColorPicker(false);
+    handleChangeColor(color);
+  }
   
   return (
-    <div className='note' style={{ backgroundColor: color || '#fff' }}>
-      <div className={`note-header ${isEdit ? 'editing' : ''}`}>
-        {!isEdit ? (
+    <div className='note position-relative' style={{ backgroundColor: color || '#ffffff' }}>
+      <div className={`note-header ${isEditMode ? 'editing' : ''}`}>
+        {!isEditMode ? (
           <h2 className='note-title text-overflow'>{title}</h2>
         ) : (
           <input 
@@ -114,8 +148,8 @@ const Note = ({
           {is_favorite ? <MdOutlineStar color="#FFA000" size={24}  /> : <MdOutlineStarBorder size={24} />}
         </div>
       </div>
-      <div className={`note-body ${isEdit ? 'editing' : ''}`}>
-        {!isEdit ? <p>{content}</p> : (
+      <div className={`note-body ${isEditMode ? 'editing' : ''} ${color ? 'border-white' : ''}`}>
+        {!isEditMode ? <p>{content}</p> : (
           <textarea 
             value={values.content} 
             onChange={(e) => setValues({ ...values, content: e.target.value })} 
@@ -128,25 +162,34 @@ const Note = ({
           <NoteAction 
             icon={<MdOutlineCreate size={24} />} 
             onClick={handleToggleEdit} 
-            isActive={isEdit} 
+            isActive={isEditMode} 
           />
-          {!isEdit && (
-            <NoteAction 
-              icon={<RiPaintFill size={24} />}
-              onClick={() => {}} 
-              isActive={false} 
-            />
+          {!isEditMode && (
+            <ColorPicker
+              show={isShowingColorPicker}
+              onChange={(value) => onColorChange(value)}
+              trigger={
+                <NoteAction 
+                  icon={<RiPaintFill size={24} />} 
+                  onClick={() => setIsShowingColorPicker((prev) => !prev)} 
+                  isActive={isShowingColorPicker} 
+                />
+              }
+            />  
           )}
         </div>
         <div className='note-actions'>
-          {isEdit 
-            ? <Button onClick={handleSaveChanges} className={'gray'} loading={isSaving}>Salvar Alterações</Button> 
-            : <NoteAction 
-                icon={<MdClose size={24} />} 
-                onClick={() => {}} 
-                isActive={false} 
-              />
-          }
+          {isEditMode ? (
+            <Button onClick={handleSaveChanges} className={'gray'}>
+              Salvar alterações
+            </Button>
+          ) :  (
+            <NoteAction 
+              icon={<MdClose size={24} />} 
+              onClick={handleDeleteNote} 
+              isActive={false} 
+            />
+          )}
         </div>
       </div>
     </div>

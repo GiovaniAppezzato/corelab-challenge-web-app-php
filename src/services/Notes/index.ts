@@ -15,10 +15,6 @@ export default class NotesService {
     return api.get<IGetNotesResponse>(`/notes?${createQueryParams(params)}`);
   }
 
-  static getNoteById(noteId: number) {
-    // 
-  }
-
   static createNote(params: ICreateNoteParams) {
     return api.post<ICreateNoteResponse>('/notes', params);
   }
@@ -27,16 +23,8 @@ export default class NotesService {
     return api.put<IUpdateNoteResponse>(`/notes/${params.id}`, { ...params, id: undefined });
   }
 
-  static delete() {
-    //
-  }
-
-  static addFile() {
-    //
-  }
-
-  static deleteFile() {
-    //
+  static deleteNote(noteId: number) {
+    return api.delete(`/notes/${noteId}`);
   }
 
   static toggleFavorite(noteId: number) {

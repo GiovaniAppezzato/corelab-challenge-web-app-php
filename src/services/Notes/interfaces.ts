@@ -23,8 +23,7 @@ export interface IUpdateNoteParams {
   id: number;
   title: string;
   content: string;
-  color?: string;
-  file?: File;
+  color: string|null;
 }
 
 export interface IUpdateNoteResponse {

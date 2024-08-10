@@ -40,7 +40,7 @@ const NotesPage = () => {
   return (
     <Fragment>
       <Header onSearch={() => {}} />
-      <main className='p-2'>
+      <main className='p-2 pb-5'>
         <div className='flex justify-center align-center'>
           <CreateNoteForm notes={notes} setNotes={setNotes} />
         </div>
