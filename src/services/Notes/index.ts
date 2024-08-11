@@ -1,5 +1,5 @@
 import api from '@src/lib/api';
-import { createQueryParams } from '@src/utilities/apiUtils';
+import { createQueryParams, createFormData } from '@src/utilities/apiUtils';
 import {
   ICreateNoteParams,
   ICreateNoteResponse,

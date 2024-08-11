@@ -6,6 +6,8 @@
   background-color: $color-shape;
   border-radius: $border-radius;
   box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
 
   .note-header {
     display: flex;
@@ -62,6 +64,7 @@
     padding: 1rem;
     border-top: 1px solid $color-border;
     min-height: 330px;
+    flex-grow: 1;
 
     &.border-white {
       border-top: 1px solid $color-shape;
@@ -87,6 +90,51 @@
         border: none;
         outline: none;
         resize: none;
+      }
+    }
+
+    .dropzone { 
+      border: 1px dashed $color-border;
+      border-radius: $border-radius;
+      margin: 0 1rem 2rem 1rem;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f4f6f8
+      }
+    }
+
+    .preview-file {
+      border: 1px solid $color-border;
+      border-radius: 10px;
+      padding: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      color: $color-typography;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f4f6f8
+      }
+
+      .preview-icon {
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
+        min-height: 20px;
+      }
+    }
+
+    .remove-file {
+      color: $color-typography;
+      cursor: pointer;
+      font-size: 12px;
+      margin-left: 5px;
+
+      &:hover {
+        text-decoration: underline;
       }
     }
   }

@@ -1,22 +1,9 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState } from "react";
 import { CreateNoteForm, Header, Note, Divider, Alert } from "@src/components";
 import { INote } from "@src/types/Note";
-import NotesService from "@src/services/Notes";
 
 const NotesPage = () => {
   const [notes, setNotes] = useState<INote[]>([]);
-
-  useEffect(() => {
-    async function fetchInitialNotes() {
-      try {
-        const response = await NotesService.getNotes({ title: undefined, color: undefined });
-        setNotes(response.data.data);
-      } catch (error) {
-        console.error("An error occurred while fetching notes", error);
-      }
-    }
-    fetchInitialNotes();
-  }, []);
 
   function onSearch(notes: INote[]) {
     setNotes(notes);

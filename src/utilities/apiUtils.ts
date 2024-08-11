@@ -22,3 +22,22 @@ export function createQueryParams(data: Record<string, any>) {
 
   return params;
 }
+
+export const generateDataUrl = (file: File): Promise<string | null> => {
+  return new Promise((resolve, reject) => {
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        resolve(reader.result as string);
+      };
+
+      reader.onerror = (error) => {
+        reject(error);
+      };
+    } else {
+      reject(new Error("No file provided"));
+    }
+  });
+};

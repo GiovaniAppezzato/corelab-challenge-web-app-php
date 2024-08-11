@@ -24,6 +24,7 @@ export interface IUpdateNoteParams {
   title: string;
   content: string;
   color: string|null;
+  file?: string|null;
 }
 
 export interface IUpdateNoteResponse {

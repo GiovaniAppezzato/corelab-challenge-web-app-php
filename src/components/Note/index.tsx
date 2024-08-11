@@ -1,9 +1,12 @@
-import { useState, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, Fragment } from "react";
 import { MdOutlineStar, MdOutlineStarBorder, MdOutlineCreate, MdClose } from "react-icons/md";
 import { RiPaintFill } from "react-icons/ri";
+import { useDropzone } from 'react-dropzone'
+import { BsImages } from "react-icons/bs";
 import * as yup from 'yup';
 import { INote } from "@src/types/Note";
 import { NoteAction, Button, ColorPicker } from '@src/components';
+import { generateDataUrl } from '@src/utilities/apiUtils';
 import NotesService from "@src/services/Notes";
 import Toast from "@src/lib/toast";
 import "@src/styles/components/_note.scss";
@@ -12,6 +15,19 @@ interface INoteProps {
   note: INote;
   setNotes: React.Dispatch<React.SetStateAction<INote[]>>;
 }
+
+interface IFormValues {
+  title: string;
+  content: string;
+  color: string|null;
+  file?: {
+    name: string;
+    size: number;
+    base64: string|null;
+  } | null;
+}
+
+const baseUrl = process.env.REACT_APP_API_URL;
 
 const schema = yup.object().shape({
   title: yup.string()
@@ -22,18 +38,36 @@ const schema = yup.object().shape({
   content: yup.string().required("Campo obrigatório").label("Conteúdo")
 });
 
-const Note = ({
-  note,
-  setNotes,
-}: INoteProps) => {
-  const { id, title, content, is_favorite, color } = note;
+const Note = ({ note, setNotes }: INoteProps) => {
+  const { id, title, content, is_favorite, color, file } = note;
   
   const [isEditMode, setIsEditMode] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isShowingColorPicker, setIsShowingColorPicker] = useState(false);
-  const [values, setValues] = useState({ title, content, color });
+  const [values, setValues] = useState<IFormValues>({ title, content, color, file: undefined });
+  
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [textareaHeight, setTextareaHeight] = useState("auto");
 
-  const handleToggleFavorite = useCallback(async () => {
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: {
+      'image/*': []
+    },
+    multiple: false,
+    onDrop: useCallback(async (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0];
+      const base64 = await generateDataUrl(file);
+      setValues({ ...values, file: { name: file.name, size: file.size, base64 } });
+    }, [])  
+  });
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      setTextareaHeight(`${textareaRef.current.scrollHeight}px`);
+    }
+  }, [values.content]);
+
+  async function handleToggleFavorite() {
     try {
       setNotes((prevNotes) => {
         return prevNotes.map((_) => {
@@ -48,9 +82,8 @@ const Note = ({
       console.error('An error occurred while toggling favorite', error);
     }
   }
-  , [id, setNotes]);
 
-  const handleChangeColor = useCallback(async (color: string|null) => {
+  async function handleChangeColor(color: string|null) {
     try {
       setNotes((prevNotes) => {
         return prevNotes.map((_) => {
@@ -58,15 +91,15 @@ const Note = ({
             return { ..._, color };
           }
           return _;
-        });
+        }); 
       });
-      await NotesService.updateNote({ ...note, color });
+      await NotesService.updateNote({ id, title, content, color, file: file?.path || null });
     } catch (error) {
       console.error('An error occurred while changing color', error);
     }
-  }, [id, setNotes]);
-  
-  const handleDeleteNote = useCallback(async () => {
+  }
+
+  async function handleDeleteNote() {
     try {
       setNotes((prevNotes) => {
         return prevNotes.filter((_) => _.id !== id);
@@ -75,24 +108,24 @@ const Note = ({
     } catch (error) {
       console.error('An error occurred while deleting note', error);
     }
-  }, [id, setNotes]);
+  }
 
   async function handleSaveChanges() {
     if(!isSaving) {
       setIsSaving(true);
       try {
         await schema.validate(values, { abortEarly: true });
-        const note = (await NotesService.updateNote({ id, ...values })).data.data;
+        const response = (await NotesService.updateNote({ id, ...values, file: values.file ? values.file.base64 : values.file}))
+
         setNotes((prevNotes) => {
           return prevNotes.map((_) => {
             if (_.id === id) {
-              return note;
+              return response.data.data;
             }
             return _;
           });
         });
-        setIsEditMode(false);
-        Toast.success('Alterações salvas com sucesso!');
+        setIsEditMode(false); 
       } catch (error) {
         if (error instanceof yup.ValidationError) {
           Toast.warning(`${error.params?.label}: ${error.message}`);
@@ -121,6 +154,7 @@ const Note = ({
       title,
       content,
       color,
+      file: undefined
     });
 
     setTimeout(() => document.querySelector<HTMLInputElement>('#title')?.focus(), 100);
@@ -130,12 +164,28 @@ const Note = ({
     setIsShowingColorPicker(false);
     handleChangeColor(color);
   }
+
+  function handleRemoveFile() {
+    setValues({ ...values, file: null });
+  }
+
+  function getFileOnEdit() {
+    if(values.file === undefined) {
+      return file;
+    }
+    return values.file;
+  }
   
   return (
     <div className='note position-relative' style={{ backgroundColor: color || '#ffffff' }}>
       <div className={`note-header ${isEditMode ? 'editing' : ''}`}>
         {!isEditMode ? (
-          <h2 className='note-title text-overflow'>{title}</h2>
+          <>
+            <h2 className='note-title text-overflow'>{title}</h2>
+            <div className='note-icon' onClick={handleToggleFavorite}>
+              {is_favorite ? <MdOutlineStar color="#FFA000" size={24}  /> : <MdOutlineStarBorder size={24} />}
+            </div>
+          </>
         ) : (
           <input 
             type='text' 
@@ -144,17 +194,59 @@ const Note = ({
             id="title"
           />
         )}
-        <div className='note-icon' onClick={handleToggleFavorite}>
-          {is_favorite ? <MdOutlineStar color="#FFA000" size={24}  /> : <MdOutlineStarBorder size={24} />}
-        </div>
       </div>
       <div className={`note-body ${isEditMode ? 'editing' : ''} ${color ? 'border-white' : ''}`}>
-        {!isEditMode ? <p>{content}</p> : (
-          <textarea 
-            value={values.content} 
-            onChange={(e) => setValues({ ...values, content: e.target.value })} 
-            rows={6}
-          />
+        {!isEditMode ? (
+          <Fragment>
+            <p>{content}</p>
+            {file && (
+              <div className="preview-file my-1 mb-2" onClick={() => {
+                window.open(`${baseUrl}/storage/files/${file.name}`, '_blank');
+              }}>
+                <div className="flex align-items gap-1">
+                  <BsImages className="preview-icon" />
+                  <small className="text-truncate">{file.name}</small>
+                </div>
+              </div>
+            )}
+          </Fragment>
+        ) : (
+          <Fragment>
+            <textarea
+              rows={1}
+              ref={textareaRef}
+              value={values.content} 
+              onChange={(e) => setValues({ ...values, content: e.target.value })}             
+              style={{ height: textareaHeight, overflow: "hidden" }}
+            />
+            {getFileOnEdit() ? (
+              <div className="mx-1">
+                <div className="preview-file">
+                  <div className="flex align-items gap-1">
+                    <BsImages className="preview-icon" />
+                    <small className="text-truncate">
+                      {getFileOnEdit()?.name}
+                    </small>
+                  </div>
+                </div>
+                <span className="remove-file" onClick={handleRemoveFile}>
+                  Remover arquivo
+                </span>
+              </div>
+            ) : (
+            <div 
+              {...getRootProps()} 
+              className={`dropzone ${color ? 'border-white' : ''}`}
+            >
+              <input {...getInputProps()} />
+              {
+                isDragActive 
+                  ? <p>Solte os arquivos aqui...</p>
+                  : <p>Arraste arquivo aqui ou clique para selecionar.</p>
+              }
+            </div>
+            )}
+          </Fragment>
         )}
       </div>
       <div className='note-footer'>
