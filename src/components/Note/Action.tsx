@@ -1,4 +1,4 @@
-import './note.scss';
+import "@src/styles/components/_note.scss";
 
 interface IActionProps {
   onClick?: () => void;

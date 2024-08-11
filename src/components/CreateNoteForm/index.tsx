@@ -5,7 +5,7 @@ import { INote } from "@src/types/Note";
 import { Button } from "@src/components";
 import NotesService from "@src/services/Notes";
 import Toast from "@src/lib/toast";
-import "./create-note-form.scss";
+import "@src/styles/components/_create-note-form.scss";
 
 interface ICreateNoteFormProps {
   notes: INote[];

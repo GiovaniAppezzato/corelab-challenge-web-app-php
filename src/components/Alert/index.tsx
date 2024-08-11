@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import './alert.scss';
+import '@src/styles/components/_alert.scss';
 
 interface IAlertProps {
   children?: ReactNode;

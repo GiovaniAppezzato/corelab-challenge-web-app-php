@@ -6,7 +6,7 @@ import { INote } from "@src/types/Note";
 import { NoteAction, Button, ColorPicker } from '@src/components';
 import NotesService from "@src/services/Notes";
 import Toast from "@src/lib/toast";
-import "./note.scss";
+import "@src/styles/components/_note.scss";
 
 interface INoteProps {
   note: INote;

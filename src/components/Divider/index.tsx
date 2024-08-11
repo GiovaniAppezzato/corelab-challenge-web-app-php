@@ -1,4 +1,4 @@
-import './divider.scss';
+import "@src/styles/components/_divider.scss";
 
 interface IDividerProps {
   label: string;

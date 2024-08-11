@@ -1,9 +1,14 @@
-@import "@src/styles/variables.scss";
+@import "@src/styles/_variables.scss";
+@import "@src/styles/_break-points.scss";
 
 .search {
   position: relative;
   height: max-content;
-  display: flex;
+  display: none;
+
+  @include laptop {
+    display: flex;
+  }
 
   .search-input {
     width: 530.17px;
@@ -23,6 +28,14 @@
   }
 
   .search-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9E9E9E;
+  }
+
+  .loading-wrapper {
     position: absolute;
     right: 1rem;
     top: 50%;

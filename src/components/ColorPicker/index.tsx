@@ -1,5 +1,5 @@
 import { MdOutlineClose } from "react-icons/md";
-import './color-picker.scss';
+import "@src/styles/components/_color-picker.scss";
 
 interface IColorPickerProps {
   show: boolean;

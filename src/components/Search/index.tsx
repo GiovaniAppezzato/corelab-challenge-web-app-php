@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { MdOutlineSearch } from "react-icons/md";
+import { FaSpinner } from "react-icons/fa";
 import NotesService from "@src/services/Notes";
 import { INote } from "@src/types/Note";
-import "./search.scss";
+import "@src/styles/components/_search.scss";
 
 interface ISearchProps {
   onSearch?: (notes: INote[]) => void;
@@ -50,7 +51,9 @@ const Search = ({
         value={searchTitle}
         onChange={onChange}
       />
-      {!loading ? <MdOutlineSearch className="search-icon" size={22} /> : null}
+      {!loading 
+        ? <MdOutlineSearch className="search-icon" size={22} /> 
+        : <div className="loading-wrapper"><FaSpinner className="animate-spin" size={22} /></div>}
     </div>
   );
 };

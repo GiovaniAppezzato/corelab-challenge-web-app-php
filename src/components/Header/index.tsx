@@ -2,7 +2,7 @@ import { MdOutlineClose } from "react-icons/md";
 import { Search } from '@src/components';
 import { INote } from "@src/types/Note";
 import coreNotes from '@src/assets/coreNotes.png';
-import './header.scss';
+import "@src/styles/components/_header.scss";
 
 interface IHeaderProps {
   onSearch?: (notes: INote[]) => void;
