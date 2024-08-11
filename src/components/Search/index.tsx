@@ -9,11 +9,15 @@ interface ISearchProps {
   onSearch?: (notes: INote[]) => void;
   placeholder?: string;
   className?: string;
+  showingSearchOnMobile?: boolean;
+  setShowingSearchOnMobile?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Search = ({
-  onSearch = () => {},
+  showingSearchOnMobile,
+  setShowingSearchOnMobile,
   className = "",
+  onSearch = () => {},
   ...rest
 }: ISearchProps) => {
   const [loading, setLoading] = useState(false);
@@ -30,7 +34,7 @@ const Search = ({
       } finally {
         setLoading(false);
       }
-    }, 500);
+    }, 250);
 
     return () => {
       clearTimeout(handler);
@@ -46,7 +50,7 @@ const Search = ({
   return (
     <div className={`search ${className}`}>
       <input 
-        className="search-input" 
+        className="search-input flex-1" 
         type="text" {...rest}
         value={searchTitle}
         onChange={onChange}

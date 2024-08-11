@@ -4,19 +4,21 @@ interface IActionProps {
   onClick?: () => void;
   icon: JSX.Element;
   isActive?: boolean;
+  className?: string;
 }
 
-const Action = ({
+const NoteAction = ({
   onClick,
   icon,
   isActive = false,
+  className = '',
   ...rest
 }: IActionProps) => {
   return (
-    <button className={`note-action ${isActive ? 'active' : ''}`} onClick={onClick} {...rest}>
+    <button className={`note-action ${className} ${isActive ? 'active' : ''}`} onClick={onClick} {...rest}>
       {icon}
     </button>
   );
 };
 
-export default Action;
+export default NoteAction;

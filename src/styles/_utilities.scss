@@ -510,3 +510,11 @@
 .fw-700 {
   font-weight: 700;
 }
+
+.bg-transparent {
+  background-color: transparent !important;
+
+  &:hover {
+    background-color: transparent !important;
+  }
+}

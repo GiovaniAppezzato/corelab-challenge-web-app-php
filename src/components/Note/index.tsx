@@ -4,11 +4,11 @@ import { RiPaintFill } from "react-icons/ri";
 import { useDropzone } from 'react-dropzone'
 import { BsImages } from "react-icons/bs";
 import * as yup from 'yup';
+import NotesService from "@src/services/Notes";
+import Toast from "@src/lib/toast";
 import { INote } from "@src/types/Note";
 import { NoteAction, Button, ColorPicker } from '@src/components';
 import { generateDataUrl } from '@src/utilities/apiUtils';
-import NotesService from "@src/services/Notes";
-import Toast from "@src/lib/toast";
 import "@src/styles/components/_note.scss";
 
 interface INoteProps {
@@ -41,7 +41,7 @@ const schema = yup.object().shape({
 const Note = ({ note, setNotes }: INoteProps) => {
   const { id, title, content, is_favorite, color, file } = note;
   
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isShowingColorPicker, setIsShowingColorPicker] = useState(false);
   const [values, setValues] = useState<IFormValues>({ title, content, color, file: undefined });
@@ -53,7 +53,6 @@ const Note = ({ note, setNotes }: INoteProps) => {
     accept: {
       'image/*': []
     },
-    multiple: false,
     onDrop: useCallback(async (acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
       const base64 = await generateDataUrl(file);
@@ -63,6 +62,7 @@ const Note = ({ note, setNotes }: INoteProps) => {
 
   useEffect(() => {
     if (textareaRef.current) {
+      setTextareaHeight('auto');
       setTextareaHeight(`${textareaRef.current.scrollHeight}px`);
     }
   }, [values.content]);
@@ -72,16 +72,22 @@ const Note = ({ note, setNotes }: INoteProps) => {
       setIsSaving(true);
       try {
         await schema.validate(values, { abortEarly: true });
-        const response = (await NotesService.updateNote({ id, ...values, file: values.file ? values.file.base64 : values.file }))
-        setNotes((prevNotes) => {
-          return prevNotes.map((_) => {
-            if (_.id === id) {
-              return response.data.data;
-            }
-            return _;
+
+        NotesService.updateNote({ id, ...values, file: values.file ? values.file.base64 : values.file })
+          .then(response => {
+            const note = response.data.data;
+
+            setNotes((prevNotes) => {
+              return prevNotes.map((_) => {
+                if (_.id === id) {
+                  return note;
+                }
+                return _;
+              });
+            });
+
+            setIsEditing(false); 
           });
-        });
-        setIsEditMode(false); 
       } catch (error) {
         if (error instanceof yup.ValidationError) {
           Toast.warning(`${error.params?.label}: ${error.message}`);
@@ -104,6 +110,7 @@ const Note = ({ note, setNotes }: INoteProps) => {
           return _;
         });
       });
+      
       NotesService.toggleFavorite(id);
     } catch (error) {
       console.error('An error occurred while toggling favorite', error);
@@ -120,7 +127,8 @@ const Note = ({ note, setNotes }: INoteProps) => {
           return _;
         }); 
       });
-      await NotesService.updateNote({ id, title, content, color, file: file?.path || null });
+
+      NotesService.updateNote({ id, title, content, color, file: file?.path || null });
     } catch (error) {
       console.error('An error occurred while changing color', error);
     }
@@ -131,22 +139,23 @@ const Note = ({ note, setNotes }: INoteProps) => {
       setNotes((prevNotes) => {
         return prevNotes.filter((_) => _.id !== id);
       });
+
       NotesService.deleteNote(id);
     } catch (error) {
       console.error('An error occurred while deleting note', error);
     }
   }
 
-  function handleToggleEdit() {
-    if (isEditMode) {
-      setIsEditMode(false);
+  function handleToggleEditMode() {
+    if (isEditing) {
+      setIsEditing(false);
     } else {
       startEditing();
     }
   }
 
   function startEditing() {
-    setIsEditMode(true);
+    setIsEditing(true);
     setIsShowingColorPicker(false);
 
     setValues({
@@ -159,21 +168,21 @@ const Note = ({ note, setNotes }: INoteProps) => {
     setTimeout(() => document.querySelector<HTMLInputElement>('#title')?.focus(), 100);
   }
 
-  function getFileOnEdit() {
+  function currentFile() {
     if(values.file === undefined) {
       return file;
     }
     return values.file;
   }
 
-  function handleViewFile() {
-    window.open(`${baseUrl}/storage/files/${getFileOnEdit()?.name}`, '_blank');
+  function viewNoteFile() {
+    window.open(`${baseUrl}/storage/files/${currentFile()?.name}`, '_blank');
   }
   
   return (
     <div className='note position-relative' style={{ backgroundColor: color || '#ffffff' }}>
-      <div className={`note-header ${isEditMode ? 'editing' : ''}`}>
-        {!isEditMode ? (
+      <div className={`note-header ${isEditing ? 'editing' : ''}`}>
+        {!isEditing ? (
           <>
             <h2 className='note-title text-overflow'>{title}</h2>
             <div className='note-icon' onClick={handleToggleFavorite}>
@@ -189,12 +198,12 @@ const Note = ({ note, setNotes }: INoteProps) => {
           />
         )}
       </div>
-      <div className={`note-body ${isEditMode ? 'editing' : ''} ${color ? 'border-white' : ''}`}>
-        {!isEditMode ? (
+      <div className={`note-body ${isEditing ? 'editing' : ''} ${color ? 'border-white' : ''}`}>
+        {!isEditing ? (
           <Fragment>
             <p>{content}</p>
             {file && (
-              <div className={`preview-file my-1 mb-2 ${color ? 'with-color' : ''}`} onClick={handleViewFile}>
+              <div className={`preview-file my-1 mb-2 ${color ? 'with-color' : ''}`} onClick={viewNoteFile}>
                 <div className="flex align-items gap-1">
                   <BsImages className="preview-icon" />
                   <small>{file.name}</small>
@@ -211,14 +220,12 @@ const Note = ({ note, setNotes }: INoteProps) => {
               onChange={(e) => setValues({ ...values, content: e.target.value })}             
               style={{ height: textareaHeight, overflow: "hidden" }}
             />
-            {getFileOnEdit() ? (
+            {currentFile() ? (
               <div className="mx-1">
                 <div className={`preview-file ${color ? 'with-color' : ''}`}>
                   <div className="flex align-items gap-1">
                     <BsImages className="preview-icon" />
-                    <small>
-                      {getFileOnEdit()?.name || 'Arquivo sem nome'}
-                    </small>
+                    <small>{currentFile()?.name}</small>
                   </div>
                 </div>
                 <span className="remove-file" onClick={() => setValues({ ...values, file: null })}>
@@ -245,10 +252,11 @@ const Note = ({ note, setNotes }: INoteProps) => {
         <div className='note-actions'>
           <NoteAction 
             icon={<MdOutlineCreate size={24} />} 
-            onClick={handleToggleEdit} 
-            isActive={isEditMode} 
+            onClick={handleToggleEditMode} 
+            isActive={isEditing} 
+            className={color ? 'with-color' : ''}
           />
-          {!isEditMode && (
+          {!isEditing && (
             <ColorPicker
               show={isShowingColorPicker}
               onChange={(value) => {
@@ -259,22 +267,23 @@ const Note = ({ note, setNotes }: INoteProps) => {
                 <NoteAction 
                   icon={<RiPaintFill size={24} />} 
                   onClick={() => setIsShowingColorPicker((prev) => !prev)} 
-                  isActive={isShowingColorPicker} 
+                  isActive={isShowingColorPicker}
+                  className={color ? 'with-color' : ''}
                 />
               }
             />  
           )}
         </div>
         <div className='note-actions'>
-          {isEditMode ? (
-            <Button onClick={handleSaveChanges} className={'gray'}>
+          {isEditing ? (
+            <Button onClick={handleSaveChanges} className={'bg-transparent'}>
               Salvar alterações
             </Button>
           ) :  (
             <NoteAction 
               icon={<MdClose size={24} />} 
               onClick={handleDeleteNote} 
-              isActive={false} 
+              className={color ? 'with-color' : ''}
             />
           )}
         </div>

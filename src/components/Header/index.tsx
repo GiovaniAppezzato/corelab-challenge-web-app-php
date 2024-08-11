@@ -1,6 +1,7 @@
-import { MdOutlineClose } from "react-icons/md";
+import React, { useState } from 'react';
 import { Search } from '@src/components';
 import { INote } from "@src/types/Note";
+import { MdOutlineSearch } from "react-icons/md";
 import coreNotes from '@src/assets/coreNotes.png';
 import "@src/styles/components/_header.scss";
 
@@ -11,21 +12,34 @@ interface IHeaderProps {
 const Header = ({
   onSearch,
 }: IHeaderProps) => {
+  const [showingSearchOnMobile, setShowingSearchOnMobile] = useState(false);
+
   return (
     <header className='header'>
       <div className='header-container'>
-        <div className="flex items-center">
-          <div className="header-logo">
-            <img src={coreNotes} alt="CoreNotes logo" />
+        <div className="flex items-center flex-1">
+          <div className="header-logo mr-3">
+            <img src={coreNotes} alt="Cor eNotes logo" />
             <h1>CoreNotes</h1>
           </div>
-          <Search 
-            className="ml-3" 
+          <Search
             placeholder="Pesquisar notas"
             onSearch={onSearch}
           />
         </div>
-        <MdOutlineClose size={24} color="#51646E" />
+        <MdOutlineSearch 
+          size={24} 
+          color="#51646E"
+          className='header-search-icon'
+          onClick={() => setShowingSearchOnMobile(!showingSearchOnMobile)} 
+        />
+      </div>
+      <div className={`header-search-mobile ${showingSearchOnMobile ? 'show' : ''}`}>
+        <Search
+          className='search-mobile'
+          placeholder="Pesquisar notas"
+          onSearch={onSearch}
+        />
       </div>
     </header>
   );

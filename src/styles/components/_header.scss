@@ -1,4 +1,5 @@
 @import "@src/styles/_variables.scss";
+@import "@src/styles/_break-points.scss";
 
 .header {
   background-color: $color-shape;
@@ -26,6 +27,28 @@
         font-weight: 400;
         font-size: 18px;
       }
+    }
+  }
+  
+  .header-search-icon {
+    cursor: pointer;
+
+    @include tablet {
+      display: none;
+    }
+  }
+
+  .header-search-mobile {
+    background-color: $color-shape;
+    padding: 1rem 2rem;
+    display: none;
+
+    .search {
+      display: flex !important;
+    }
+    
+    &.show {
+      display: block;
     }
   }
 }
