@@ -104,6 +104,14 @@
       &:hover {
         background-color: #f4f6f8
       }
+
+      &.with-color {
+        border-color: $color-typography !important;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.25) !important;
+        }
+      }
     }
 
     .preview-file {
@@ -114,9 +122,8 @@
       justify-content: space-between;
       color: $color-typography;
       cursor: pointer;
-
       &:hover {
-        background-color: #f4f6f8
+        background-color: #f4f6f8;  
       }
 
       .preview-icon {
@@ -124,6 +131,14 @@
         height: 20px;
         min-width: 20px;
         min-height: 20px;
+      }
+
+      &.with-color {
+        border-color: $color-typography !important;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.25) !important;
+        }
       }
     }
 

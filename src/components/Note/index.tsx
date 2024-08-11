@@ -67,6 +67,33 @@ const Note = ({ note, setNotes }: INoteProps) => {
     }
   }, [values.content]);
 
+  async function handleSaveChanges() {
+    if(!isSaving) {
+      setIsSaving(true);
+      try {
+        await schema.validate(values, { abortEarly: true });
+        const response = (await NotesService.updateNote({ id, ...values, file: values.file ? values.file.base64 : values.file }))
+        setNotes((prevNotes) => {
+          return prevNotes.map((_) => {
+            if (_.id === id) {
+              return response.data.data;
+            }
+            return _;
+          });
+        });
+        setIsEditMode(false); 
+      } catch (error) {
+        if (error instanceof yup.ValidationError) {
+          Toast.warning(`${error.params?.label}: ${error.message}`);
+        } else {
+          Toast.error('Problemas ao salvar as alterações, tente novamente mais tarde.');
+        }
+      } finally {
+        setIsSaving(false);
+      }
+    }
+  }
+
   async function handleToggleFavorite() {
     try {
       setNotes((prevNotes) => {
@@ -104,37 +131,9 @@ const Note = ({ note, setNotes }: INoteProps) => {
       setNotes((prevNotes) => {
         return prevNotes.filter((_) => _.id !== id);
       });
-      await NotesService.deleteNote(id);
+      NotesService.deleteNote(id);
     } catch (error) {
       console.error('An error occurred while deleting note', error);
-    }
-  }
-
-  async function handleSaveChanges() {
-    if(!isSaving) {
-      setIsSaving(true);
-      try {
-        await schema.validate(values, { abortEarly: true });
-        const response = (await NotesService.updateNote({ id, ...values, file: values.file ? values.file.base64 : values.file}))
-
-        setNotes((prevNotes) => {
-          return prevNotes.map((_) => {
-            if (_.id === id) {
-              return response.data.data;
-            }
-            return _;
-          });
-        });
-        setIsEditMode(false); 
-      } catch (error) {
-        if (error instanceof yup.ValidationError) {
-          Toast.warning(`${error.params?.label}: ${error.message}`);
-        } else {
-          Toast.error('Problemas ao salvar as alterações, tente novamente mais tarde.');
-        }
-      } finally {
-        setIsSaving(false);
-      }
     }
   }
 
@@ -160,20 +159,15 @@ const Note = ({ note, setNotes }: INoteProps) => {
     setTimeout(() => document.querySelector<HTMLInputElement>('#title')?.focus(), 100);
   }
 
-  function onColorChange(color: string|null) {
-    setIsShowingColorPicker(false);
-    handleChangeColor(color);
-  }
-
-  function handleRemoveFile() {
-    setValues({ ...values, file: null });
-  }
-
   function getFileOnEdit() {
     if(values.file === undefined) {
       return file;
     }
     return values.file;
+  }
+
+  function handleViewFile() {
+    window.open(`${baseUrl}/storage/files/${getFileOnEdit()?.name}`, '_blank');
   }
   
   return (
@@ -200,12 +194,10 @@ const Note = ({ note, setNotes }: INoteProps) => {
           <Fragment>
             <p>{content}</p>
             {file && (
-              <div className="preview-file my-1 mb-2" onClick={() => {
-                window.open(`${baseUrl}/storage/files/${file.name}`, '_blank');
-              }}>
+              <div className={`preview-file my-1 mb-2 ${color ? 'with-color' : ''}`} onClick={handleViewFile}>
                 <div className="flex align-items gap-1">
                   <BsImages className="preview-icon" />
-                  <small className="text-truncate">{file.name}</small>
+                  <small>{file.name}</small>
                 </div>
               </div>
             )}
@@ -221,27 +213,27 @@ const Note = ({ note, setNotes }: INoteProps) => {
             />
             {getFileOnEdit() ? (
               <div className="mx-1">
-                <div className="preview-file">
+                <div className={`preview-file ${color ? 'with-color' : ''}`}>
                   <div className="flex align-items gap-1">
                     <BsImages className="preview-icon" />
-                    <small className="text-truncate">
-                      {getFileOnEdit()?.name}
+                    <small>
+                      {getFileOnEdit()?.name || 'Arquivo sem nome'}
                     </small>
                   </div>
                 </div>
-                <span className="remove-file" onClick={handleRemoveFile}>
+                <span className="remove-file" onClick={() => setValues({ ...values, file: null })}>
                   Remover arquivo
                 </span>
               </div>
             ) : (
             <div 
               {...getRootProps()} 
-              className={`dropzone ${color ? 'border-white' : ''}`}
+              className={`dropzone ${color ? 'with-color' : ''}`}
             >
               <input {...getInputProps()} />
               {
                 isDragActive 
-                  ? <p>Solte os arquivos aqui...</p>
+                  ? <p>Solte o arquivo aqui...</p>
                   : <p>Arraste arquivo aqui ou clique para selecionar.</p>
               }
             </div>
@@ -259,7 +251,10 @@ const Note = ({ note, setNotes }: INoteProps) => {
           {!isEditMode && (
             <ColorPicker
               show={isShowingColorPicker}
-              onChange={(value) => onColorChange(value)}
+              onChange={(value) => {
+                setIsShowingColorPicker(false);
+                handleChangeColor(value);
+              }}
               trigger={
                 <NoteAction 
                   icon={<RiPaintFill size={24} />} 
