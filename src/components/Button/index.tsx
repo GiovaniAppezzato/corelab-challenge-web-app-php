@@ -8,7 +8,7 @@ interface IButtonProps {
   className?: string;
 }
 
-const Action = ({
+const Button = ({
   onClick,
   children,
   loading = false,
@@ -22,4 +22,4 @@ const Action = ({
   );
 };
 
-export default Action;
+export default Button;

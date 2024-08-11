@@ -1,6 +1,6 @@
 @import "@src/styles/variables.scss";
 
-.Form {
+.create-note-form {
   width: 100%;
   max-width: 530px;
   background-color: $color-shape;
@@ -8,7 +8,7 @@
   border: 1px solid $color-border;
   box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.25);
 
-  .FormHeader {
+  .form-header {
     position: relative;
 
     input {
@@ -23,7 +23,7 @@
       outline: none;
     }
 
-    .FavoriteIcon {
+    .favorite-icon {
       position: absolute;
       top: 50%;
       right: 1rem;
@@ -37,7 +37,7 @@
     }
   }
 
-  .FormBody {
+  .form-body {
     border-top: 1px solid $color-border;
 
     textarea {

@@ -9,7 +9,7 @@ const NotesPage = () => {
   useEffect(() => {
     async function fetchInitialNotes() {
       try {
-        const response = await NotesService.getNotes({});
+        const response = await NotesService.getNotes({ title: undefined, color: undefined });
         setNotes(response.data.data);
       } catch (error) {
         console.error("An error occurred while fetching notes", error);
@@ -18,8 +18,8 @@ const NotesPage = () => {
     fetchInitialNotes();
   }, []);
 
-  function onSearch(notes: string) {
-    // 
+  function onSearch(notes: INote[]) {
+    setNotes(notes);
   }
 
   function renderNotesSection(title: string, filterFn: (note: INote) => boolean) {
@@ -39,7 +39,7 @@ const NotesPage = () => {
 
   return (
     <Fragment>
-      <Header onSearch={() => {}} />
+      <Header onSearch={onSearch} />
       <main className='p-2 pb-5'>
         <div className='flex justify-center align-center'>
           <CreateNoteForm notes={notes} setNotes={setNotes} />

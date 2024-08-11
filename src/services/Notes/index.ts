@@ -8,7 +8,7 @@ import {
   IToggleFavoriteResponse,
   IUpdateNoteParams,
   IUpdateNoteResponse
-} from './interfaces';
+} from './types';
 
 export default class NotesService {
   static getNotes(params: IGetNotesParams) {

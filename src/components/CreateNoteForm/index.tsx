@@ -5,7 +5,7 @@ import { INote } from "@src/types/Note";
 import { Button } from "@src/components";
 import NotesService from "@src/services/Notes";
 import Toast from "@src/lib/toast";
-import styles from "./CreateNoteForm.module.scss";
+import "./create-note-form.scss";
 
 interface ICreateNoteFormProps {
   notes: INote[];
@@ -65,8 +65,8 @@ const CreateNoteForm = ({ setNotes }: ICreateNoteFormProps) => {
   }
 
   return (
-    <div className={styles.Form}>
-      <div className={styles.FormHeader}>
+    <div className="create-note-form">
+      <div className="form-header">
         <input 
           type="text" 
           placeholder="Digite o título"
@@ -74,16 +74,17 @@ const CreateNoteForm = ({ setNotes }: ICreateNoteFormProps) => {
           onChange={e => setValues({ ...values, title: e.target.value })}
         />
         {values.is_favorite 
-          ? <MdOutlineStar size={24} className={`${styles.FavoriteIcon} ${styles.Active}`} onClick={handleToggleFavorite} /> 
-          : <MdOutlineStarBorder size={24} className={styles.FavoriteIcon} onClick={handleToggleFavorite} />}
+          ? <MdOutlineStar size={24} className={`favorite-icon active`} onClick={handleToggleFavorite} /> 
+          : <MdOutlineStarBorder size={24} className={`favorite-icon`} onClick={handleToggleFavorite} />}
       </div>
-      <div className={styles.FormBody}>
+      <div className="form-body">
         <textarea
           rows={4} 
           placeholder="Digite o conteúdo da nota"
           value={values.content}
           onChange={e => setValues({ ...values, content: e.target.value })}
         />
+        
       </div>
       {canSubmit() && (
         <div className="flex justify-end px-1 pb-1">

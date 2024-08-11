@@ -1,15 +1,15 @@
 import { ReactNode } from 'react';
 import './alert.scss';
 
-interface IButtonProps {
+interface IAlertProps {
   children?: ReactNode;
   className?: string;
 }
 
-const Action = ({
+const Alert = ({
   children,
   className = '',
-}: IButtonProps) => {
+}: IAlertProps) => {
   return (
     <div className={`alert ${className}`}>
       {children}
@@ -17,4 +17,4 @@ const Action = ({
   );
 };
 
-export default Action;
+export default Alert;
