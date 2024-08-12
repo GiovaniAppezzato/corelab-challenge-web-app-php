@@ -40,14 +40,14 @@ const schema = yup.object().shape({
 
 const Note = ({ note, setNotes }: INoteProps) => {
   const { id, title, content, is_favorite, color, file } = note;
-  
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [textareaHeight, setTextareaHeight] = useState("auto");
+
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isShowingColorPicker, setIsShowingColorPicker] = useState(false);
   const [values, setValues] = useState<IFormValues>({ title, content, color, file: undefined });
-  
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [textareaHeight, setTextareaHeight] = useState("auto");
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
@@ -214,7 +214,7 @@ const Note = ({ note, setNotes }: INoteProps) => {
         ) : (
           <Fragment>
             <textarea
-              rows={1}
+              rows={2}
               ref={textareaRef}
               value={values.content} 
               onChange={(e) => setValues({ ...values, content: e.target.value })}             
