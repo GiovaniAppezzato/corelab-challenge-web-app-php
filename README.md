@@ -1,80 +1,55 @@
-## Corelab Challenge:
+<p align="center">
+    <a href="https://www.letsdeliverbr.com/" target="_blank"> 
+        <img src="./src/assets/corelab.png" width="200" style="margin-bottom: 40px;">    
+    </a>
+</p>
 
-You are tasked with building a web application that allows users to create and manage their to-do lists. The application should consist of a responsive webpage built in React, and an API built in PHP Laravel to store and manage the to-do lists.
+## 🚀 Começando
 
-### The repositories
-The [frontend repository](https://github.com/corelabbr/corelab-challenge-web-app-php)
+Olá! Este repositório contém a minha solução para o desafio da Corelab. Trata-se de um sistema simples em Laravel/React para gerenciar anotações e lembretes de usuários.
 
-If you feel more comfortable, you can pick another React framework and show us your skills.
+Siga as **instruções** abaixo para configurar o ambiente e rodar o projeto localmente.
 
-The [backend repository](https://github.com/corelabbr/corelab-api-challenge-php)
+### 📋 Pré-requisitos
 
-If you feel more comfortable, you can pick another PHP framework and show us your skills.
+Antes de começar, verifique se você possui as seguintes dependências instaladas. Caso contrário, faça o download e instale-as para prosseguir:
 
-### The Layout
-Open the [layout mockup](https://www.figma.com/file/sQrUVHTlyogq3qGdkqGTXN/mockup?node-id=7%3A2&t=ANTOTiqjqGWYuoUr-0) in desktop and mobile version and follow this design as much as possible.
+* [Git](https://git-scm.com/downloads) 
+* [NPM (8.5.5)](https://www.npmjs.com/)
+* [Yarn](https://yarnpkg.com/)
+* [Node (16.15.0)](https://nodejs.org/en/)
 
-### The application should have the following functionality:
+### 🔧 Instalação
 
-1. Users should be able to create, read, update, and delete to-do items using the API.
-2. Users should be able to mark an item as a favorite.
-3. Users should be able to set a color for each to-do item.
-4. The React frontend should display the user's to-do list in a responsive and visually appealing manner, with the ability to filter by favorite items and color.
-5. The favorited items should be displayed at the top of the list.
+Após ter configurado o ambiente, siga as etapas abaixo para instalar o projeto localmente
 
-### Technical Requirements:
-1. The backend API should be built in PHP Laravel framework and use a database of your choice (e.g., MySQL, PostgreSQL, etc.).
-2. The frontend should be built in React and use modern web development tools and best practices.
-3. The application should be responsive and visually appealing.
+1. Certifique-se de que você está autenticado no GitHub e, em seguida, clone o repositório:
 
-### Deliverables:
-1. A link to a GitHub repository containing the complete source code for the project.
-2. A written description of how to set up and run the application locally.
+```
+git clone https://github.com/GiovaniAppezzato/corelab-challenge-web-app-php
+```
 
-### Evaluation Criteria:
-1. Code Quality
-2. Code Format
-3. Code Performance
-4. Frontend Design
-5. If your code is Easily Readable
-6. Mobile First approach
-7. Code Responsibility
-8. Features Work
-9. Responsiveness
-10. Does the application meet the functionality requirements listed above?
-11. Is the code well-organized, easy to read, and well-documented?
-12. Are modern web development tools and best practices used?
-13. Is the application visually appealing and responsive?
+2. Navegue até a pasta do projeto e execute o comando abaixo para instalar todas as dependências necessárias:
 
-### Backend
-Repository: 
-1. PHP: ^7.4
-2. Laravel: ^8.0
-3. Database: Choose your own, you can even use PostgreSQL.
+```
+yarn install
+```
 
-### Frontend
-Repository: 
-1. Node: ^16.15.0
-2. NPM: ^8.5.5
-3. Framework: React TS
-4. Sass or other preprocessor
+3. Após a conclusão da instalação, crie o arquivo de configuração com o comando a seguir na raiz do projeto:
 
-### Want to impress us even more?
-If you feel comfortable and want to impress us even more, you can do the following:
+```
+cp .env.example .env
+```
 
-1. Work on correct types and interfaces
-2. Work on eslint rules
-3. Work prettier config
-4. Work on docker containers
-5. Work on tests
-6. Work on CI/CD
+4. Abra o arquivo `.env` e configure as variáveis de ambiente conforme necessário. Certifique-se de especificar o IP e a porta onde o backend está rodando:
 
-### What to do when you finish?
+```
+# Example
+REACT_APP_API_URL=http://127.0.0.1:8000 
+```
 
-Create a file PULL_REQUEST.md where you will describe what you did and how in as much detail as possible. Feel free to add videos for better explanation.
+5. Pronto! Agora você pode executar o projeto usando os seguinte comando:
 
-Create a new pull request using the same branch name for Backend and Frontend
-
-Send us the pull requests and that's all!
-
-#### Good luck! The sky is the limit 🚀
+```
+yarn start --reset-cache
+```

@@ -1,5 +1,11 @@
-import Button from "./Button";
-import Card from "./Card";
-import Search from "./Search";
+import Header from "@src/components/Header";
+import Search from "@src/components/Search";
+import Note from "@src/components/Note";
+import NoteAction from "@src/components/Note/NoteAction";
+import CreateNoteForm from "@src/components/CreateNoteForm";
+import Button from "@src/components/Button";
+import Divider from "@src/components/Divider";
+import Alert from "@src/components/Alert";
+import ColorPicker from "@src/components/ColorPicker";
 
-export { Button, Card, Search };
+export { Header, Search, Note, NoteAction, CreateNoteForm, Button, Divider, Alert, ColorPicker };

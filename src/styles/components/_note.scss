@@ -1,0 +1,199 @@
+@import "@src/styles/_variables.scss";
+
+.note {
+  width: 100%;
+  max-width: 390px;
+  background-color: $color-shape;
+  border-radius: $border-radius;
+  box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+
+  .note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    position: relative;
+
+    .note-title {
+      font-family: $font-family;
+      font-size: $font-size;
+      color: $color-typography;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .note-icon {
+      cursor: pointer;
+      color: $color-typography;
+      position: absolute;
+      top: 50%;
+      right: 1rem;
+      transform: translateY(-50%);
+
+      &.Active {
+        color: #FFA000 !important;
+      }
+    }
+
+    &.editing {
+      padding: 0;
+
+      .note-title {
+        display: none;
+      }
+
+      input {
+        width: 100%;
+        padding: 1rem 3rem 1rem 1rem;
+        font-family: $font-family;
+        font-size: $font-size;
+        color: $color-typography;
+        font-weight: 700;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        line-height: 1.5;
+      }
+    }
+  }
+
+  .note-body {
+    padding: 1rem;
+    border-top: 1px solid $color-border;
+    min-height: 330px;
+    flex-grow: 1;
+
+    &.border-white {
+      border-top: 1px solid $color-shape;
+    }
+
+    p {
+      font-family: $font-family;
+      font-size: $font-size;
+      color: $color-typography;
+      margin: 0;
+    }
+
+    &.editing {
+      padding: 0;
+
+      input, textarea {
+        width: 100%;
+        padding: 1rem;
+        font-family: $font-family;
+        font-size: $font-size;
+        color: $color-typography;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        resize: none;
+      }
+    }
+
+    .dropzone { 
+      border: 1px dashed $color-border;
+      border-radius: $border-radius;
+      margin: 0 1rem 2rem 1rem;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f4f6f8
+      }
+
+      &.with-color {
+        border-color: $color-typography !important;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.25) !important;
+        }
+      }
+    }
+
+    .preview-file {
+      border: 1px solid $color-border;
+      border-radius: 10px;
+      padding: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      color: $color-typography;
+      cursor: pointer;
+      &:hover {
+        background-color: #f4f6f8;  
+      }
+
+      .preview-icon {
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
+        min-height: 20px;
+      }
+
+      &.with-color {
+        border-color: $color-typography !important;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.25) !important;
+        }
+      }
+    }
+
+    .remove-file {
+      color: $color-typography;
+      cursor: pointer;
+      font-size: 12px;
+      margin-left: 5px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .note-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+
+    .note-actions {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      .note-action {
+        width: 34px;
+        height: 34px;
+        border: none;
+        outline: none;
+        background-color: transparent;
+        border-radius: 50%;
+        transition: all 0.3s;
+        color: $color-typography;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $color-primary;
+        }
+
+        &.active {
+          background-color: $color-primary;
+        }
+
+        &.with-color {
+          &.active {
+            background-color: rgba(255, 255, 255, 0.50) !important;
+          }
+
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.50) !important;
+          }
+        }
+      }
+    }
+  }
+}

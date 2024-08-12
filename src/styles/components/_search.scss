@@ -1,0 +1,47 @@
+@import "@src/styles/_variables.scss";
+@import "@src/styles/_break-points.scss";
+
+.search {
+  position: relative;
+  height: max-content;
+  max-width: 530.17px;
+  width: 100%;
+  display: none;
+
+  @include tablet {
+    display: flex;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: .525rem .75rem;
+    border-radius: $border-radius;
+    box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid $color-border;
+    font-size: $font-size;
+    font-family: $font-family;
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 0.2rem rgba(255, 227, 179, 0.55);
+      transition: box-shadow 0.1s;
+    }
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9E9E9E;
+  }
+
+  .loading-wrapper {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9E9E9E;
+  }
+}

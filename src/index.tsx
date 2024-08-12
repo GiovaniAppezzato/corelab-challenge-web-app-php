@@ -1,15 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.module.scss';
-import VehiclesPage from './pages/Vehicles';
-import reportWebVitals from './reportWebVitals';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import '@src/index.scss';
+import NotesPage from '@src/pages/Notes';
+import reportWebVitals from '@src/reportWebVitals';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
-    <VehiclesPage />
+    <NotesPage />
+    <ToastContainer />
   </React.StrictMode>
 );
 

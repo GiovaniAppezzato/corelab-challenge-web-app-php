@@ -1,0 +1,54 @@
+@import "@src/styles/_variables.scss";
+@import "@src/styles/_break-points.scss";
+
+.header {
+  background-color: $color-shape;
+  box-shadow: 0 1px 7px 0 rgba(149, 149, 149, 0.25);
+  
+  .header-container {
+    padding: 0.8rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 36px;
+        height: 36px;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-size: 1.5rem;
+        color: $color-typography;
+        margin: 0 0 0 1rem;
+        font-weight: 400;
+        font-size: 18px;
+      }
+    }
+  }
+  
+  .header-search-icon {
+    cursor: pointer;
+
+    @include tablet {
+      display: none;
+    }
+  }
+
+  .header-search-mobile {
+    background-color: $color-shape;
+    padding: 1rem 2rem;
+    display: none;
+
+    .search {
+      display: flex !important;
+    }
+    
+    &.show {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,27 @@
+@import "@src/styles/_variables.scss";
+
+.button {
+  background-color: $color-primary;
+  color: $color-typography;
+  border-radius: $border-radius;
+  font-family: $font-family;
+  font-size: 14px;
+  border: none;
+  border-radius:  $border-radius;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+
+  &.gray {
+    background-color: #f6f6f6;
+    color: $color-typography;
+
+    &:hover {
+      background-color: #e9e9e9;
+    }
+  }
+
+  &:hover {
+    background-color: darken($color-primary, 5%);
+  }
+}

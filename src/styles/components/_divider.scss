@@ -1,0 +1,18 @@
+@import "@src/styles/_variables.scss";
+
+.divider {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  color: $color-typography;
+  font-weight: 400;
+
+  &::before,
+  &::after {
+    flex: 1;
+    content: '';
+    padding: 0.5px;
+    background-color: $color-border;
+    margin: 10px;
+  }
+}
