@@ -57,7 +57,7 @@ const Note = ({ note, setNotes }: INoteProps) => {
       const file = acceptedFiles[0];
       const base64 = await generateDataUrl(file);
       setValues({ ...values, file: { name: file.name, size: file.size, base64 } });
-    }, [])  
+    }, [values])  
   });
 
   useEffect(() => {
@@ -65,7 +65,7 @@ const Note = ({ note, setNotes }: INoteProps) => {
       setTextareaHeight('auto');
       setTextareaHeight(`${textareaRef.current.scrollHeight}px`);
     }
-  }, [values.content]);
+  }, [values]);
 
   async function handleSaveChanges() {
     if(!isSaving) {

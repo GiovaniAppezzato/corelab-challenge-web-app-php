@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Search } from '@src/components';
 import { INote } from "@src/types/Note";
-import { MdOutlineSearch } from "react-icons/md";
+import { MdOutlineSearch, MdOutlineClose } from "react-icons/md";
 import coreNotes from '@src/assets/coreNotes.png';
 import "@src/styles/components/_header.scss";
 
@@ -27,12 +27,21 @@ const Header = ({
             onSearch={onSearch}
           />
         </div>
-        <MdOutlineSearch 
-          size={24} 
-          color="#51646E"
-          className='header-search-icon'
-          onClick={() => setShowingSearchOnMobile(!showingSearchOnMobile)} 
-        />
+        {!showingSearchOnMobile ? (
+          <MdOutlineSearch 
+            size={24} 
+            color="#51646E"
+            className='header-search-icon'
+            onClick={() => setShowingSearchOnMobile(true)} 
+          />
+        ) : (
+          <MdOutlineClose 
+            size={24} 
+            color="#51646E"
+            className='header-search-icon'
+            onClick={() => setShowingSearchOnMobile(false)} 
+          />
+        )}
       </div>
       <div className={`header-search-mobile ${showingSearchOnMobile ? 'show' : ''}`}>
         <Search
