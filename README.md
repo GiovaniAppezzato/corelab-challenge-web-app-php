@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://www.letsdeliverbr.com/" target="_blank"> 
+    <a href="https://www.corelab.com.br/" target="_blank"> 
         <img src="./src/assets/corelab.png" width="200" style="margin-bottom: 40px;">    
     </a>
 </p>
