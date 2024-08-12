@@ -176,7 +176,7 @@ const Note = ({ note, setNotes }: INoteProps) => {
   }
 
   function viewNoteFile() {
-    window.open(`${baseUrl}/storage/files/${currentFile()?.name}`, '_blank');
+    window.open(`${baseUrl}/storage/files/${file?.name}`, '_blank');
   }
   
   return (
