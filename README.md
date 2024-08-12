@@ -4,9 +4,13 @@
     </a>
 </p>
 
-## 🚀 Começando
+## 📝 Sistema de anotações e lembretes
 
 Olá! Este repositório contém a minha solução para o desafio da Corelab. Trata-se de um sistema simples para gerenciar anotações e lembretes de usuários desenvolvido em Laravel e React.
+
+Se precisar entrar em contato, você pode me encontrar no [LinkedIn](https://www.linkedin.com/in/giovani-appezzato-414a6424b/) ou pelo e-mail giovani.appezzato@gmail.com.
+
+## 🚀 Começando
 
 Siga as **instruções** abaixo para configurar o ambiente e rodar o front-end do projeto localmente.
 
