@@ -6,9 +6,9 @@
 
 ## 🚀 Começando
 
-Olá! Este repositório contém a minha solução para o desafio da Corelab. Trata-se de um sistema simples em Laravel/React para gerenciar anotações e lembretes de usuários.
+Olá! Este repositório contém a minha solução para o desafio da Corelab. Trata-se de um sistema simples para gerenciar anotações e lembretes de usuários desenvolvido em Laravel e React.
 
-Siga as **instruções** abaixo para configurar o ambiente e rodar o projeto localmente.
+Siga as **instruções** abaixo para configurar o ambiente e rodar o front-end do projeto localmente.
 
 ### 📋 Pré-requisitos
 
