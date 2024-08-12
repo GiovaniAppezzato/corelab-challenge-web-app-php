@@ -50,5 +50,9 @@
     &.show {
       display: block;
     }
+
+    @include tablet {
+      display: none !important;
+    }
   }
 }
