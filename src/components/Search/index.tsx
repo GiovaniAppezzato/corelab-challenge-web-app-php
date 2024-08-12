@@ -41,7 +41,6 @@ const Search = ({
     }
   }, [searchTitle]);
   
-
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
     setSearchTitle(value);

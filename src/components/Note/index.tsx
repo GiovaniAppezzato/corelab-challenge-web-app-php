@@ -128,7 +128,7 @@ const Note = ({ note, setNotes }: INoteProps) => {
         }); 
       });
 
-      NotesService.updateNote({ id, title, content, color, file: file?.path || null });
+      NotesService.updateNote({ id, title, content, color, file: undefined });
     } catch (error) {
       console.error('An error occurred while changing color', error);
     }
